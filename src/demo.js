@@ -1,19 +1,13 @@
-var ShapesDemo = Class.create({
+;
+var Demo = {
+  paper: null,
   initialize: function() {
     // set paper
-    var dim = document.viewport.getDimensions();
-    this.paper = Raphael($("paper"), dim.width, dim.height);
-    // set events
-    window.observe("resize", (function() {
-      this.resize();
-    }).bind(this));
-  },
-  resize: function() {
-    var dim = document.viewport.getDimensions();
-    this.paper.setSize(dim.width, dim.height);
+    this.paper = Raphael(0, 100, $(window).width(), $(window).height());
   },
   addShape: function(shape) {
-    var dim = document.viewport.getDimensions(),
+    var win = $(window);
+    var dim = {width:win.width(), height:win.height()},
         shape
     switch(shape) {
       case "ngon":
@@ -43,6 +37,8 @@ var ShapesDemo = Class.create({
     }
     shape.attr({ opacity: 0.5, "stroke-width": 3, stroke: "#333" })
   }
-});
+};
 
-var Demo = new ShapesDemo();
+$(document).ready(function() {
+  Demo.initialize();
+});

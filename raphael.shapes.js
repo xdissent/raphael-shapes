@@ -18,14 +18,14 @@ Raphael.fn.ngon = function(cx, cy, r, points) {
   return this.path()
           .sett({ type: "ngon", r: r, points: points })
           .translate(cx, cy);
-}
+};
 
 // adding a star element
 Raphael.fn.star = function(cx, cy, r1, r2, points) {
   return this.path()
           .sett({ type: "star", r1: r1, r2: r2, points: points })
           .translate(cx, cy);
-}
+};
 
 // adding a star element
 Raphael.el.sett = function() {
@@ -35,9 +35,13 @@ Raphael.el.sett = function() {
   } else if (arguments[0]) {
     setts = arguments[0];
   }
-  this.setts = $H(this.setts).merge(setts).toObject();
+  this.setts = {};
+  var self = this;
+  _(setts).chain().keys().each(function(key) {
+    self.setts[key] = setts[key];
+  });
   return this.attr("path", this[this.setts.type]());
-}
+};
 
 // n-gon path function
 Raphael.el.ngon = function() {
@@ -45,7 +49,7 @@ Raphael.el.ngon = function() {
       n = this.setts.points,
       r = this.setts.r,
       part = 360 / n;
-  (n).times(function(i) {
+  _(n).times(function(i) {
     var a = i * part - 90,
         x = r * Math.cos(a * Math.PI / 180),
         y = r * Math.sin(a * Math.PI / 180);
@@ -53,7 +57,7 @@ Raphael.el.ngon = function() {
   });
   points.push("Z");
   return points.join(" ");
-}
+};
 
 // star path function
 Raphael.el.star = function() {
@@ -62,7 +66,7 @@ Raphael.el.star = function() {
       r1 = this.setts.r1,
       r2 = this.setts.r2,
       part = 360 / n;
-  (n).times(function(i) {
+  _(n).times(function(i) {
     var a = i * part + 90,
         x = r1 * Math.cos(a * Math.PI / 180),
         y = r1 * Math.sin(a * Math.PI / 180);
@@ -74,17 +78,17 @@ Raphael.el.star = function() {
   });
   points.push("Z");
   return points.join(" ");
-}
+};
 
 // polygon function
 Raphael.el.polygon = function() {
   var poly_array = ["M"];
-  $w(this.setts.points).each(function(point, i) {
-    point.split(",").each(function(c) {
+  _(this.setts.points.split(' ')).each(function(point, i) {
+    _(point.split(",")).each(function(c) {
       poly_array.push(parseFloat(c));
     });
     if (i == 0) poly_array.push("L");
   });
   poly_array.push("Z");
-  return poly_array.compact();
-}
+  return _.compact(poly_array);
+};
