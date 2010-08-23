@@ -1,4 +1,4 @@
-# Raphaël Shapes plugin - 0.0.2
+# Raphaël Shapes plugin - 0.0.2-xdissent
 
 ### What is it?
 An extension to the Raphael Vector Library.<br/>
@@ -6,6 +6,9 @@ Currently it provides the following shapes:<br/>
 - polygon (throw in raw SVG polygon string)<br/>
 - n-gon<br/>
 - star
+
+### What's different?
+This version of the shapes extension does not rely on any external libraries (except Raphael).
 
 ### Usage
 
@@ -58,11 +61,9 @@ Retrieve the settings of a shape
 
 ### Dependencies
 - [Raphael JS](http://raphaeljs.com/)
-- [Prototype JS](http://prototypejs.org/)
 
 ### Important
 - This plugin is still under development
-- It requires the Prototype JS library
 
 ### To-do
 - writing tests

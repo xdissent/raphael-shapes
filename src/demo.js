@@ -1,14 +1,12 @@
-;
 var Demo = {
   paper: null,
   initialize: function() {
     // set paper
-    this.paper = Raphael(0, 100, $(window).width(), $(window).height());
+    this.paper = Raphael('paper', 640, 480);
   },
   addShape: function(shape) {
-    var win = $(window);
-    var dim = {width:win.width(), height:win.height()},
-        shape
+    var dim = {width:640, height:480},
+        shape;
     switch(shape) {
       case "ngon":
         var r = 20 + 80 * Math.random(),
@@ -39,6 +37,6 @@ var Demo = {
   }
 };
 
-$(document).ready(function() {
+window.onload = function() {
   Demo.initialize();
-});
+};

@@ -35,11 +35,12 @@ Raphael.el.sett = function() {
   } else if (arguments[0]) {
     setts = arguments[0];
   }
+  
   this.setts = {};
-  var self = this;
-  _(setts).chain().keys().each(function(key) {
-    self.setts[key] = setts[key];
-  });
+  for (var key in setts) {
+    this.setts[key] = setts[key];
+  }
+
   return this.attr("path", this[this.setts.type]());
 };
 
@@ -48,13 +49,16 @@ Raphael.el.ngon = function() {
   var points = [],
       n = this.setts.points,
       r = this.setts.r,
-      part = 360 / n;
-  _(n).times(function(i) {
+      part = 360 / n,
+      i = 0;
+
+  while(n--) {    
     var a = i * part - 90,
         x = r * Math.cos(a * Math.PI / 180),
         y = r * Math.sin(a * Math.PI / 180);
     points.push((i == 0 ? "M" : "L") + x + "," + y);
-  });
+    i++;
+  }
   points.push("Z");
   return points.join(" ");
 };
@@ -65,8 +69,10 @@ Raphael.el.star = function() {
       n = this.setts.points,
       r1 = this.setts.r1,
       r2 = this.setts.r2,
-      part = 360 / n;
-  _(n).times(function(i) {
+      part = 360 / n,
+      i = 0;
+
+  while(n--) {
     var a = i * part + 90,
         x = r1 * Math.cos(a * Math.PI / 180),
         y = r1 * Math.sin(a * Math.PI / 180);
@@ -75,20 +81,37 @@ Raphael.el.star = function() {
     x = r2 * Math.cos(a * Math.PI / 180),
     y = r2 * Math.sin(a * Math.PI / 180),
     points.push("L" + x + "," + y);
-  });
+    i++;
+  }
   points.push("Z");
   return points.join(" ");
 };
 
 // polygon function
 Raphael.el.polygon = function() {
-  var poly_array = ["M"];
-  _(this.setts.points.split(' ')).each(function(point, i) {
-    _(point.split(",")).each(function(c) {
-      poly_array.push(parseFloat(c));
-    });
-    if (i == 0) poly_array.push("L");
-  });
+  var poly_array = ["M"],
+      points = this.setts.points.split(" "),
+      n = points.length,
+      i = 0;
+      
+  while (n--) {
+    var point = points[i].split(","),
+        p;
+    
+    if (!isNaN(p = parseFloat(point[0]))) {
+        poly_array.push(parseFloat(p));
+    }
+    
+    if (!isNaN(p = parseFloat(point[1]))) {
+        poly_array.push(parseFloat(p));
+    }
+    
+    if (i == 0) {
+        poly_array.push("L");
+    }
+    i++;
+  }
+
   poly_array.push("Z");
-  return _.compact(poly_array);
+  return poly_array;
 };
