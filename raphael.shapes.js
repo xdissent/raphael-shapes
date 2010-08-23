@@ -90,12 +90,12 @@ Raphael.el.star = function() {
 // polygon function
 Raphael.el.polygon = function() {
   var poly_array = ["M"],
-      points = this.setts.points.split(" "),
+      points = typeof this.setts.points == "string" ? this.setts.points.split(" ") : this.setts.points,
       n = points.length,
       i = 0;
       
   while (n--) {
-    var point = points[i].split(","),
+    var point = typeof points[i] == "string" ? points[i].split(",") : points[i],
         p;
     
     if (!isNaN(p = parseFloat(point[0]))) {
